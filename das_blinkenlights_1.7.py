@@ -1,3 +1,5 @@
+#https://open.kattis.com/problems/dasblinkenlights
+
 p,q,s = [int(x) for x in input().split()]
 num_list = []
 

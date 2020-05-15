@@ -1,3 +1,5 @@
+#https://open.kattis.com/problems/detaileddifferences
+
 #setting test case variable
 testCase = input()
 

@@ -1,3 +1,5 @@
+#https://open.kattis.com/problems/reversebinary
+
 #create empty list to store binary number
 binaryL = []
 

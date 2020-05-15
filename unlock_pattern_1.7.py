@@ -1,3 +1,5 @@
+#https://open.kattis.com/problems/unlockpattern
+
 #import math module (standard library)
 import math
 
