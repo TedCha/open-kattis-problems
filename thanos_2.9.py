@@ -16,7 +16,7 @@ def sustainability_check(p, r, f, count=0):
 
 n = int(input())
 
-for i in range(n):
+for _ in range(n):
     p, r, f = input().split(' ')
     
     print(sustainability_check(p, r, f))
