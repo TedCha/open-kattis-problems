@@ -10,7 +10,7 @@ import math
 p = int(input())
 
 for _ in range(p):
-    k, n = map(int, input().split(' '))
+    k, n = [int(x) for x in input().split(' ')]
     
     j = math.ceil(n / 10)
     l = []
