@@ -44,9 +44,9 @@ for line in stdin:
             
     for k in range(len(graph)):
         for j in range(len(graph[k])):
-            point = (k, j)
-            if (graph[k][j] == "-") and (point not in visited):
-                breadthFirstSearch(point)
+            currentNode = (k, j)
+            if (graph[k][j] == "-") and (currentNode not in visited):
+                breadthFirstSearch(currentNode)
                 starCount += 1
 
     print(f"Case {caseCount}: {starCount}")
