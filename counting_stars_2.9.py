@@ -8,13 +8,9 @@ caseCount = 0
 for line in stdin:
 
     caseCount += 1
-    
     x, y = [int(x) for x in line.split()]
-
     graph = [input() for _ in range(x)]
-
     starCount = 0
-
     visited = set()
 
     def validMoves(node):
@@ -39,8 +35,8 @@ for line in stdin:
             node = queue.popleft()
             for move in validMoves(node):
                 if move not in visited:
-                    visited.add(move)
                     queue.append(move)
+                    visited.add(move)
             
     for k in range(len(graph)):
         for j in range(len(graph[k])):
