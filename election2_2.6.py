@@ -10,10 +10,7 @@ for i in range(n):
 
     candidatesByParty[candidate] = party
 
-candidatesByVotes = candidatesByParty.copy()
-
-for key in candidatesByVotes:
-    candidatesByVotes[key] = 0
+candidatesByVotes = dict.fromkeys(candidatesByParty, 0)
 
 m = int(input())
 
@@ -23,6 +20,7 @@ for j in range(m):
     # Very tricky OpenKattis
     if candidate not in candidatesByVotes:
         candidatesByVotes[candidate] = 0
+        candidatesByParty[candidate] = 'independent'
 
     candidatesByVotes[candidate] += 1
 
