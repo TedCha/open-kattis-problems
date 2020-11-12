@@ -1,35 +1,117 @@
+from collections import deque
+
+# Create a graph class (data structure)
+class Graph(object):
+
+    # Initialize our data members (equal to a constructor in OOP)
+    def __init__(self, nodes, costIndex, rootNodes):
+        # Adjacency list data structure: (ex: {0:[1, 2, 3], 1:[0, 4, 5], ...})
+        self.graph = {node: [] for node in range(nodes)}
+
+        # Queue data structure
+        self.queue = deque()
+
+        # Set listing all possible nodes: set of n
+        self.notVisited = {n for n in range(nodes)}
+
+        # In this context, the horrorIndex
+        self.costIndex = costIndex
+
+        # In this context, the horrorList
+        self.rootNodes = rootNodes
+    
+    # Function to add a relationship to a graph (node -> neighbor)
+    def addEdge(self, node, neigbor):
+        # Add the neighbor into the adjacency list of the node
+        self.graph[node].append(neigbor)
+
+        # Add the node into the adjacency list of the neighbor
+        self.graph[neighbor].append(node)
+    
+    # Our friend, the BFS!
+    def breadthFirstSearch(self):
+        
+        # Initialize arbitrary highestCost and highestNode variables
+        # Used to track the highest indexed movie and the cost of that movie
+        highestCost, highestNode = -1, -1
+
+        # BFS; while our queue is not empty (truthy value)
+        while self.queue:
+            # Set node var to dequeued value
+            node = self.queue.popleft()
+
+            # Set cost to node's cost from our costIndex
+            cost = self.costIndex[node]
+
+            # If the cost is greater that our highestCost var
+            # or if the cost is equal, and the node is less than the highestNode
+            if cost > highestCost or (cost == highestCost and node < highestNode):
+
+                # Our most current dequeued node cost becomes the highest cost
+                # Our most current dequeued node becomes the highest node
+                highestCost, highestNode = cost, node
+
+            # BFS; for neighbor in the adjacency list of the current node
+            for neighbor in self.graph[node]:
+
+                # If the neighbor has not already been visited
+                if neighbor in self.notVisited:
+
+                    # Remove from the notVisited Set
+                    self.notVisited.remove(neighbor)
+
+                    # Append the neigbor node into the queue
+                    self.queue.append(neighbor)
+
+                    # Set the cost of the neighbor += 1
+                    self.costIndex[neighbor] = cost + 1
+
+        # Once there's nothing left in the queue; return the highestNode
+        return highestNode
+    
+    def singleSourceShortestPath(self):
+        # Set up our rootNodes in the queue and remove them from our notVisited
+        for root in self.rootNodes:
+            self.notVisited.remove(root)
+            self.queue.append(root)
+        
+        # Find the highestNode from doing a breadthFirstSearch from each rootNode
+        highestNode = self.breadthFirstSearch()
+
+        # If the notVisited set is empty (therefore every node was visited)
+        # The highestNode has the highest horror index (or highest cost)
+        if not self.notVisited:
+            return highestNode
+        else:
+            # If the notVisited set is not empty (therefore every node has not been visited)
+            # Find the min node in the notVisited set
+            return min(self.notVisited)
+
+
+# This is where our code starts!
+# Declare and initialize the n, h, and l values from input as int
 n, h, l = [int(x) for x in input().split()]
-horrorList = {int(key): 0 for key in input().split()}
 
-# Create rest of movies not included in intial horror list
-# and set their value to None
-for i in range(n):
-    if i not in horrorList:
-        horrorList[i] = None
+# Create a set of horror movies from input as int
+horrorList = {int(i) for i in input().split()}
 
-for j in range(l):
-    a, b = [int(x) for x in input().split()]
-    
-    if horrorList[a] != None and horrorList[b] != None:
-        if horrorList[a] == horrorList[b]:
-            horrorList[a] += 1
-            horrorList[b] += 1
-        #elif horrorList[a]
-    elif horrorList[a] == None and horrorList[b] == None:
-        continue
-    elif horrorList[a] == None:
-        horrorList[a] = horrorList[b] + 1
-    elif horrorList[b] == None:
-        horrorList[b] = horrorList[a] + 1
+# Create the horror index; use ternary operator to set key value
+# k: None if k is not in horror list else k: 0
+# Movies in the horrorList have a known value, all other movies have no known value
+horrorIndex = {k: None if k not in horrorList else 0 for k in range(n)}
 
-# Set all values that are stil None to the highest value
-for key, value in horrorList.items():
-    if horrorList[key] == None:
-        horrorList[key] = n
+# Create an instance of our graph class with 
+# n = nodes, horrorIndex = costIndex, and horrorList = rootNodes
+movieGraph = Graph(n, horrorIndex, horrorList)
 
-# Get the max value in the horror list.
-highest = max(horrorList.values())
+# For relationship (empty var cause not used) in range of number of relationships
+for _ in range(l):
+    # Declare and initialize node and neighbor from input as int
+    node, neighbor = [int(x) for x in input().split()]
 
-# Check if there's multiple answers and print the min
-print(min([key for key, value in horrorList.items() if value == highest]))
-    
+    # Add an edge to our graph (adjacency list data structure)
+    movieGraph.addEdge(node, neighbor)
+
+# Call our singleSourceShortestPath to find the 
+# node with the highest index value (highest cost)
+print(movieGraph.singleSourceShortestPath())
