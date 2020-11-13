@@ -4,14 +4,21 @@ from collections import deque
 class Graph(object):
 
     # Initialize our data members (equal to a constructor in OOP)
+    # Quick explanation of self; refers to instance of which it is called
     def __init__(self, nodes, costIndex, rootNodes):
-        # Adjacency list data structure: (ex: {0:[1, 2, 3], 1:[0, 4, 5], ...})
+        # Adjacency list data structure: 
+        # (ex: {0:[1, 2, 3],
+        #       1:[0, 4, 5],
+        #       2:[0, 4, 5],
+        #       node:[neighbor1, n2, n3, ...]
+        #       })
         self.graph = {node: [] for node in range(nodes)}
 
-        # Queue data structure
+        # Queue data structure (FIFO)
         self.queue = deque()
 
         # Set listing all possible nodes: set of n
+        # ex: {0, 1, 2, 3 ... n}
         self.notVisited = {n for n in range(nodes)}
 
         # In this context, the horrorIndex
@@ -20,7 +27,7 @@ class Graph(object):
         # In this context, the horrorList
         self.rootNodes = rootNodes
     
-    # Function to add a relationship to a graph (node -> neighbor)
+    # Function to add a relationship (a.k.a edge) to a graph (node -> neighbor)
     def addEdge(self, node, neigbor):
         # Add the neighbor into the adjacency list of the node
         self.graph[node].append(neigbor)
@@ -37,14 +44,17 @@ class Graph(object):
 
         # BFS; while our queue is not empty (truthy value)
         while self.queue:
-            # Set node var to dequeued value
+            # Set node var to dequeued value (our current node)
             node = self.queue.popleft()
 
-            # Set cost to node's cost from our costIndex
+            # Set cost to node's cost from our costIndex (our current cost)
             cost = self.costIndex[node]
 
             # If the cost is greater that our highestCost var
             # or if the cost is equal, and the node is less than the highestNode
+            # So if the cost is higher; the index is higher (we want that as our answer!)
+            # We check only if the node < highestNode because we want to make 
+            # sure we're only returning the min node with the same cost
             if cost > highestCost or (cost == highestCost and node < highestNode):
 
                 # Our most current dequeued node cost becomes the highest cost
@@ -63,13 +73,13 @@ class Graph(object):
                     # Append the neigbor node into the queue
                     self.queue.append(neighbor)
 
-                    # Set the cost of the neighbor += 1
+                    # Set the cost of the neighbor to the current cost + 1
                     self.costIndex[neighbor] = cost + 1
 
         # Once there's nothing left in the queue; return the highestNode
         return highestNode
     
-    def singleSourceShortestPath(self):
+    def findHighestIndex(self):
         # Set up our rootNodes in the queue and remove them from our notVisited
         for root in self.rootNodes:
             self.notVisited.remove(root)
@@ -112,6 +122,6 @@ for _ in range(l):
     # Add an edge to our graph (adjacency list data structure)
     movieGraph.addEdge(node, neighbor)
 
-# Call our singleSourceShortestPath to find the 
+# Call our findHighestIndex to find the 
 # node with the highest index value (highest cost)
-print(movieGraph.singleSourceShortestPath())
+print(movieGraph.findHighestIndex())
