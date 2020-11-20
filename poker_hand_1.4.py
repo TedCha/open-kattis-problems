@@ -1,7 +1,12 @@
 # https://open.kattis.com/problems/pokerhand
 
-# It's so ugly it's beautiful
-h = input()[::3]; print(max({c: h.count(c) for c in set(h)}.values()))
+"""
+# Original:# It's so ugly it's beautiful
+# string = input().replace(" ", "")[::2]; print(max(dict((letter, string.count(letter)) for letter in set(string)).values()))
+"""
+
+# It's actually pretty nice
+h=input()[::3]; print(max([h.count(c) for c in set(h)]))
 
 """
 # Explanation:
@@ -18,14 +23,12 @@ uniqueRanks = set(ranksInHand)
 
 # Create a count of each unique rank in the hand
 # .count() is a string method to count how many times a character appears in a string
-countByUniqueRank = {rank: ranksInHand.count(rank) for rank in uniqueRanks}
+uniqueRankCount = [ranksInHand.count(rank) for rank in uniqueRanks]
 # Input: uniqueRanks == {A, K}
-# Output: countByUniqueRank == {'A': 4, 'K': 1}
+# Output: uniqueRankCount == [4, 1] 
 
 # Get the max value from all unique rank values
-# .values() returns an object (<class 'dict_values'>: a Dictionary View Object)
-# https://docs.python.org/3/library/stdtypes.html#dictionary-view-objects <- Documentation
-maxValue = max(countByUniqueRank.values())
+maxValue = max(uniqueRankCount)
 
 print(maxValue)
 """
