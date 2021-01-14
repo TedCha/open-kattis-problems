@@ -3,6 +3,7 @@ test_editor_ok.py
 code_snippets_storage.py
 misc_files/
 incomplete/
+plan.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
