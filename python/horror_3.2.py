@@ -1,3 +1,5 @@
+# https://open.kattis.com/problems/horror
+
 from collections import deque
 
 # Create a graph class (data structure)
